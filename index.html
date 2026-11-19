@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Player One Pack</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap">
+<style>
+:root{--bg:#14123b;--panel:#201d57;--ink:#fff8e7;--sun:#ffc93c;--mint:#3ddc97;--coral:#ff5d73;--dim:#b9b4e6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:800 1.05rem/1.5 Nunito,system-ui,sans-serif;min-height:100vh}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font:700 clamp(2rem,8vw,3.4rem)/1 Fredoka,system-ui,sans-serif;margin:8px 0 4px;color:var(--sun);text-shadow:3px 3px 0 var(--coral)}
+.sub{color:var(--dim);margin:0 0 18px}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+nav button{flex:0 0 auto;font:700 1rem Fredoka,system-ui,sans-serif;border:3px solid var(--sun);background:transparent;color:var(--sun);border-radius:999px;padding:8px 16px;cursor:pointer}
+nav button[aria-selected=true]{background:var(--sun);color:var(--bg)}
+button:focus-visible,select:focus-visible,textarea:focus-visible{outline:4px solid var(--mint);outline-offset:2px}
+section{display:none;background:var(--panel);border-radius:22px;padding:20px;margin-top:10px;border:3px dashed var(--dim)}
+section.on{display:block}
+h2{font:700 1.6rem Fredoka,system-ui,sans-serif;margin:0 0 6px;color:var(--mint)}
+.go{font:700 1.15rem Fredoka,system-ui,sans-serif;background:var(--mint);color:var(--bg);border:0;border-radius:14px;padding:12px 20px;cursor:pointer;margin:8px 8px 8px 0;box-shadow:0 4px 0 #1d8a5b}
+.go:active{transform:translateY(3px);box-shadow:0 1px 0 #1d8a5b}
+.go.alt{background:var(--sun);box-shadow:0 4px 0 #b8901c}
+select,textarea{font:inherit;background:var(--bg);color:var(--ink);border:3px solid var(--dim);border-radius:12px;padding:8px 10px;max-width:100%}
+textarea{width:100%;min-height:110px;margin-top:8px}
+label{display:inline-block;margin:4px 10px 4px 0}
+.card{background:var(--bg);border-radius:16px;padding:14px 16px;margin-top:12px;border-left:8px solid var(--coral)}
+.big{font:700 clamp(2.4rem,14vw,4.5rem) Fredoka,system-ui,sans-serif;color:var(--sun);text-align:center;margin:8px 0}
+.opts{display:grid;gap:8px;margin-top:10px}
+.opts button{font:inherit;text-align:left;background:var(--bg);color:var(--ink);border:3px solid var(--dim);border-radius:12px;padding:10px 14px;cursor:pointer}
+.opts button.right{border-color:var(--mint);background:#14473a}
+.opts button.wrong{border-color:var(--coral);background:#4d1b2a}
+.note{color:var(--dim);font-size:.9rem;margin-top:20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<h1>Player One Pack</h1>
+<p class="sub">Five little helpers for movies, games, stories and brain power.</p>
+<nav role="tablist" id="tabs"></nav>
+
+<section id="t0"><h2>Movie night</h2>
+<p>Pick a mood and get a film, a snack and a question to chat about.</p>
+<label>Mood <select id="mood"><option value="any">Surprise me</option><option>Funny</option><option>Adventure</option><option>Cosy</option></select></label><br>
+<button class="go" id="mBtn">Pick a film</button>
+<div class="card" id="mOut">Press the button to start the show.</div></section>
+
+<section id="t1"><h2>Game timer</h2>
+<p>Set your game time. When it ends, you get a break challenge.</p>
+<label>Minutes <select id="gMin"><option>15</option><option selected>30</option><option>45</option><option>60</option></select></label><br>
+<button class="go" id="gStart">Start</button><button class="go alt" id="gStop">Stop</button>
+<div class="big" id="gClock">30:00</div>
+<div class="card" id="gOut">Ask a grown-up how long you can play today.</div></section>
+
+<section id="t2"><h2>Story maker</h2>
+<p>Mix a hero, a place and a goal. Then write what happens next.</p>
+<button class="go" id="sBtn">Make a story start</button>
+<div class="card" id="sOut">Press the button for an adventure idea.</div>
+<textarea id="sText" placeholder="Type what happens next…" aria-label="Your story"></textarea></section>
+
+<section id="t3"><h2>Maths quest</h2>
+<p>Earn coins and level up. Wrong answers just try again.</p>
+<label>Level <select id="qLvl"><option value="1">Starter</option><option value="2">Hero</option><option value="3">Legend</option></select></label>
+<div class="card" id="qQ">Press start.</div>
+<div class="opts" id="qOpts"></div>
+<button class="go" id="qBtn">Start quest</button>
+<div id="qScore" class="sub">Coins: 0</div></section>
+
+<section id="t4"><h2>Film and game quiz</h2>
+<div class="card" id="zQ">Press start.</div>
+<div class="opts" id="zOpts"></div>
+<button class="go" id="zBtn">Start quiz</button>
+<div id="zScore" class="sub"></div></section>
+
+<p class="note">Everything runs on this page only. Nothing is saved or sent anywhere. Always check a film’s age rating (BBFC) and a game’s age rating (PEGI) with a grown-up.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id),pick=a=>a[Math.floor(Math.random()*a.length)],rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const names=['Movie night','Game timer','Story maker','Maths quest','Quiz'];
+names.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('role','tab');b.onclick=()=>show(i);$('tabs').append(b)});
+function show(i){[...$('tabs').children].forEach((b,j)=>b.setAttribute('aria-selected',i===j));names.forEach((_,j)=>$('t'+j).classList.toggle('on',i===j))}
+show(0);
+
+/* 1 Movies */
+const films=[
+['The Wizard of Oz','Adventure','U','Why did Dorothy want to go home?','popcorn and yellow-brick-road cheese cubes'],
+['Chitty Chitty Bang Bang','Adventure','U','If you had a flying car, where would you go first?','sweet popcorn'],
+['Toy Story','Funny','U','Which toy would you want in your room?','pizza slices'],
+['The Jungle Book (1967)','Funny','U','Which animal would you pick as a friend?','banana chips'],
+['Singin’ in the Rain','Cosy','U','What would you do on a rainy day if you didn’t mind getting wet?','jam sandwiches'],
+['Spirited Away','Adventure','U','Which spirit in the bathhouse was the most interesting?','rice crackers'],
+['My Neighbour Totoro','Cosy','U','What would you do with a giant fluffy forest friend?','fruit and biscuits'],
+['Wallace & Gromit: The Curse of the Were-Rabbit','Funny','U','Which invention would you build?','crackers and cheese'],
+['Finding Nemo','Adventure','U','Which sea creature was your favourite?','goldfish crackers'],
+['Mary Poppins','Cosy','U','What would you pull out of a magic bag?','shortbread biscuits'],
+['The Iron Giant','Adventure','PG','What would you teach a friendly giant robot?','toast with jam']];
+$('mBtn').onclick=()=>{const m=$('mood').value,l=m==='any'?films:films.filter(f=>f[1]===m),f=pick(l);
+$('mOut').innerHTML=`<b style="font-size:1.3rem;color:var(--sun)">${f[0]}</b><br>Mood: ${f[1]}. Usual rating: ${f[2]} (check before you watch).<br>Snack idea: ${f[4]}.<br>Chat question: ${f[3]}`};
+
+/* 2 Timer */
+let tI,tLeft=0;const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+const brk=['Do 10 star jumps!','Stretch as tall as you can for 20 seconds.','Get a glass of water.','Look out of a window and spot 5 things.','Hop on one foot, then the other, 10 times.','Do a silly victory dance.','Walk to another room and back like a stealth agent.'];
+$('gMin').onchange=()=>{if(!tI)$('gClock').textContent=fmt($('gMin').value*60)};
+$('gStart').onclick=()=>{clearInterval(tI);tLeft=$('gMin').value*60;$('gClock').textContent=fmt(tLeft);$('gOut').textContent='Game on! Have fun.';
+tI=setInterval(()=>{tLeft--;$('gClock').textContent=fmt(Math.max(tLeft,0));if(tLeft<=0){clearInterval(tI);tI=0;$('gOut').innerHTML='<b style="color:var(--sun)">Time’s up!</b> Save your game. Break challenge: '+pick(brk)}},1000)};
+$('gStop').onclick=()=>{clearInterval(tI);tI=0;$('gClock').textContent=fmt($('gMin').value*60);$('gOut').textContent='Timer stopped.'};
+$('gClock').textContent=fmt(1800);
+
+/* 3 Story */
+const heroes=['a robot who loves cheese','a brave hedgehog','a tiny dragon','a space pirate','a clumsy knight','a talking toaster','a young wizard with a wobbly wand'];
+const places=['an underwater castle','a forest made of sweets','a floating city in the clouds','a haunted arcade','a desert planet','a train that never stops'];
+const goals=['find a missing golden key','win the biggest race ever','rescue a lost puppy','stop a sneaky villain','build the best game level','deliver a very important pizza'];
+$('sBtn').onclick=()=>{$('sOut').innerHTML=`Once upon a time, ${pick(heroes)} arrived in ${pick(places)}. The mission: ${pick(goals)}.`};
+
+/* 4 Maths */
+let coins=0,ans=0;
+function qNext(){const L=+$('qLvl').value;let a,b,op,t;
+if(L===1){a=rnd(2,12);b=rnd(2,12);op='+';ans=a+b;t=`You find ${a} coins, then ${b} more. How many coins now?`}
+else if(L===2){op=pick(['×','−']);if(op==='×'){a=rnd(2,10);b=rnd(2,10);ans=a*b;t=`${a} treasure chests each hold ${b} gems. How many gems?`}else{a=rnd(30,90);b=rnd(5,29);ans=a-b;t=`You have ${a} health points and lose ${b}. How many are left?`}}
+else{a=rnd(3,12);b=rnd(3,12);const c=rnd(5,40);ans=a*b+c;t=`${a} levels give ${b} stars each, plus ${c} bonus stars. Total stars?`}
+$('qQ').textContent=t;const s=new Set([ans]);while(s.size<4)s.add(Math.max(0,ans+rnd(-10,10)));
+$('qOpts').replaceChildren(...[...s].sort(()=>Math.random()-.5).map(v=>{const x=document.createElement('button');x.textContent=v;
+x.onclick=()=>{if(v===ans){x.className='right';coins+=L*5;$('qScore').textContent='Coins: '+coins+(coins%50===0?' – Level up!':'');setTimeout(qNext,700)}else{x.className='wrong';$('qScore').textContent='Not quite. Try another!'}};return x}))}
+$('qBtn').onclick=()=>{coins=0;$('qBtn').textContent='Skip question';$('qScore').textContent='Coins: 0';qNext()};
+$('qLvl').onchange=()=>{if($('qBtn').textContent!=='Start quest')qNext()};
+
+/* 5 Quiz */
+const qs=[
+['What is the name of Dorothy’s little dog in The Wizard of Oz?',['Toto','Spot','Rex','Buddy'],0],
+['In Toy Story, what is the name of the space ranger toy?',['Woody','Buzz Lightyear','Rex','Slinky'],1],
+['In Finding Nemo, what is Nemo’s dad called?',['Marlin','Dory','Gill','Bruce'],0],
+['Which brother is Mario’s sidekick in the Super Mario games?',['Wario','Luigi','Toad','Yoshi'],1],
+['What colour is Sonic the Hedgehog?',['Red','Green','Blue','Yellow'],2],
+['Which Pokémon is famous for being yellow and electric?',['Charmander','Pikachu','Squirtle','Bulbasaur'],1],
+['What kind of vehicle is Chitty Chitty Bang Bang?',['A boat','A car','A train','A rocket'],1],
+['In Minecraft, which green mob hisses and explodes?',['Zombie','Skeleton','Creeper','Enderman'],2],
+['In Shrek, what colour is Shrek?',['Green','Blue','Orange','Purple'],0],
+['Which Japanese studio made My Neighbour Totoro?',['Studio Ghibli','Pixar','Aardman','DreamWorks'],0]];
+let zi=0,zs=0,order=[];
+function zNext(){if(zi>=order.length){$('zQ').textContent='Finished!';$('zOpts').replaceChildren();$('zScore').textContent=`You scored ${zs} out of ${order.length}.`;$('zBtn').textContent='Play again';zi=-1;return}
+const q=order[zi];$('zQ').textContent=`Question ${zi+1}: ${q[0]}`;$('zScore').textContent=`Score: ${zs}`;
+$('zOpts').replaceChildren(...q[1].map((o,i)=>{const x=document.createElement('button');x.textContent=o;
+x.onclick=()=>{[...$('zOpts').children].forEach((c,j)=>{c.disabled=true;if(j===q[2])c.className='right'});if(i===q[2])zs++;else x.className='wrong';
+$('zScore').textContent=`Score: ${zs}`;zi++;setTimeout(zNext,1100)};return x}))}
+$('zBtn').onclick=()=>{order=[...qs].sort(()=>Math.random()-.5).slice(0,6);zi=0;zs=0;$('zBtn').textContent='Restart';zNext()};
+</script>
+</body>
+</html>
